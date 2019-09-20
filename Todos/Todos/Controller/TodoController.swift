@@ -1,63 +1,53 @@
 //
-//  TodosController.swift
+//  TodoController.swift
 //  Todos
 //
-//  Created by Joe on 20/09/19.
+//  Created by Joe on 21/09/19.
 //  Copyright © 2019 Joe. All rights reserved.
 //
 
 import UIKit
 
-class TodosController: UITableViewController {
-    
-    var todos = [
-        Todo(name: "coding C#", checked: false),
-        Todo(name: "coding Java", checked: false),
-        Todo(name: "coding Dart", checked: false),
-        Todo(name: "coding swift", checked: false)
-    ]
+protocol TodoDelegate {
+    func didAdd(name:String)
+}
 
+class TodoController: UITableViewController {
+
+    var delegate:TodoDelegate?
+    
+    @IBOutlet weak var todoInput: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        todoInput.becomeFirstResponder()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+    @IBAction func done(_ sender: Any) {
+        if let name = todoInput.text, !name.isEmpty {
+            delegate?.didAdd(name:name)
+            
+            navigationController?.popViewController(animated: true)
+        }
+       
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return todos.count
-    }
-
-    
+    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "todo", for: indexPath) as! TodoCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
         // Configure the cell...
-        cell.todo.text = todos[indexPath.row].name
-        cell.checkMark.text = todos[indexPath.row].checked ? "√" : ""
- 
+
         return cell
     }
- 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //change model
-        todos[indexPath.row].checked = !todos[indexPath.row].checked
-        //change view
-        let cell = tableView.cellForRow(at: indexPath) as! TodoCell
-        cell.checkMark.text = todos[indexPath.row].checked ? "√" : ""
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
+    */
+
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -93,28 +83,14 @@ class TodosController: UITableViewController {
     }
     */
 
-    
+    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        if segue.identifier == "addTodo" {
-            let vc = segue.destination as! TodoController
-            vc.delegate = self
-        }
     }
- 
+    */
 
-}
-
-extension TodosController : TodoDelegate{
-    func didAdd(name: String) {
-        //model
-        todos.append(Todo(name: name, checked: false))
-        //view
-        let indexPath = IndexPath(row: todos.count-1, section: 0)
-        tableView.insertRows(at: [indexPath], with: .automatic)
-    }
 }

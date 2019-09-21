@@ -19,6 +19,20 @@ class TodosController: UITableViewController {
     
     var row = 0
 
+    @IBAction func batchDelete(_ sender: Any) {
+        //M
+        if let indexPaths = tableView.indexPathsForSelectedRows{
+            for indexPath in indexPaths {
+                todos.remove(at: indexPath.row)
+            }
+        
+        
+            //V
+            tableView.beginUpdates()
+            tableView.deleteRows(at: indexPaths, with: .automatic)
+            tableView.endUpdates()
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,8 +40,15 @@ class TodosController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
+        self.editButtonItem.title = "Edit"
     }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        editButtonItem.title = editing ? "Done" : "Edit"
+    }
+    
      // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -52,40 +73,54 @@ class TodosController: UITableViewController {
     }
  
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //change model
-        todos[indexPath.row].checked = !todos[indexPath.row].checked
-        //change view
-        let cell = tableView.cellForRow(at: indexPath) as! TodoCell
-        cell.checkMark.text = todos[indexPath.row].checked ? "√" : ""
-        tableView.deselectRow(at: indexPath, animated: true)
+        if !isEditing {
+            //change model
+            todos[indexPath.row].checked = !todos[indexPath.row].checked
+            //change view
+            let cell = tableView.cellForRow(at: indexPath) as! TodoCell
+            cell.checkMark.text = todos[indexPath.row].checked ? "√" : ""
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
     }
     
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
+     // Return false if you do not want the specified item to be editable.
         return true
     }
     */
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
+            todos.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "Delete"
+    }
+    
 
-    /*
+    
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+        //M
+        let temp = todos[fromIndexPath.row]
+        todos[fromIndexPath.row] = todos[to.row]
+        todos[to.row] = temp
+        
+        //V
+        tableView.moveRow(at: fromIndexPath, to: to)
+        tableView.reloadData()
     }
-    */
+    
 
     /*
     // Override to support conditional rearranging of the table view.

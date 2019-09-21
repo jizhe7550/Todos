@@ -13,7 +13,7 @@
         <scene sceneID="zNC-vR-ga1">
             <objects>
                 <tableViewController id="ETb-27-ptZ" customClass="TodosController" customModule="Todos" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="0Jf-Fx-T57">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="0Jf-Fx-T57">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -62,11 +62,18 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Todos" id="UwC-pS-YUR">
                         <barButtonItem key="backBarButtonItem" title="Back" id="5gb-qL-Ivd"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="yOh-Tu-ujV">
-                            <connections>
-                                <segue destination="h3a-Bj-uDH" kind="show" identifier="addTodo" id="O9q-Mf-hjy"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="yOh-Tu-ujV">
+                                <connections>
+                                    <segue destination="h3a-Bj-uDH" kind="show" identifier="addTodo" id="O9q-Mf-hjy"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="trash" id="WYi-Jr-0uB">
+                                <connections>
+                                    <action selector="batchDelete:" destination="ETb-27-ptZ" id="iP6-NB-QYD"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rwl-x6-hqa" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -16,6 +16,8 @@ class TodosController: UITableViewController {
         Todo(name: "coding Dart", checked: false),
         Todo(name: "coding swift", checked: false)
     ]
+    
+    var row = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,12 +98,18 @@ class TodosController: UITableViewController {
     
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    // In a storyboard-based application, you will often want to do a little preparation before navigation 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if segue.identifier == "addTodo" {
             let vc = segue.destination as! TodoController
+            vc.delegate = self
+        } else if segue.identifier == "editTodo" {
+            let vc = segue.destination as! TodoController
+            let cell = sender as! TodoCell
+            row = tableView.indexPath(for: cell)!.row
+            vc.name = todos[row].name
             vc.delegate = self
         }
     }
@@ -110,6 +118,15 @@ class TodosController: UITableViewController {
 }
 
 extension TodosController : TodoDelegate{
+    func didEdit(name: String) {
+        //model
+        todos[row].name = name
+        //view
+        let indexPath = IndexPath(row: row, section: 0)
+        let cell = tableView.cellForRow(at: indexPath) as! TodoCell
+        cell.todo.text = name
+    }
+    
     func didAdd(name: String) {
         //model
         todos.append(Todo(name: name, checked: false))

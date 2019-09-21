@@ -10,11 +10,14 @@ import UIKit
 
 protocol TodoDelegate {
     func didAdd(name:String)
+    func didEdit(name:String)
 }
 
 class TodoController: UITableViewController {
 
     var delegate:TodoDelegate?
+    var name:String?
+
     
     @IBOutlet weak var todoInput: UITextField!
     
@@ -22,6 +25,12 @@ class TodoController: UITableViewController {
         super.viewDidLoad()
 
         todoInput.becomeFirstResponder()
+        
+        todoInput.text = name
+        
+        if name != nil{
+            navigationItem.title = "Edit Task"
+        }
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -31,7 +40,13 @@ class TodoController: UITableViewController {
 
     @IBAction func done(_ sender: Any) {
         if let name = todoInput.text, !name.isEmpty {
-            delegate?.didAdd(name:name)
+            
+            if self.name != nil{
+                delegate?.didEdit(name:name)
+            }else{
+                delegate?.didAdd(name:name)
+            }
+            
             
             navigationController?.popViewController(animated: true)
         }

@@ -51,6 +51,7 @@
                                 <connections>
                                     <outlet property="checkMark" destination="16t-ph-VJ7" id="vUk-0g-Zz4"/>
                                     <outlet property="todo" destination="w27-Vf-nzJ" id="Dam-ja-GDK"/>
+                                    <segue destination="h3a-Bj-uDH" kind="show" identifier="editTodo" trigger="accessoryAction" id="NuX-tf-Qgg"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -146,4 +147,7 @@
             <point key="canvasLocation" x="-362.31884057971018" y="201.5625"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="NuX-tf-Qgg"/>
+    </inferredMetricsTieBreakers>
 </document>
